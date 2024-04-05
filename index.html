@@ -13,6 +13,7 @@
         function setup(){
             createCanvas(900,600)
             tablero = new TableroT()
+            createMapBaseTetriminos()
             tetrimino = new Tetrimino()
             resizeCanvas(
                 tablero.ancho + 2*margin_tablero,
@@ -39,19 +40,35 @@
                 tetrimino.downMov()
             }     
         }
-
         function draw(){
             background("lightgray")
             tablero.dibujar()
             tetrimino.dibujar()
             keyEventTetris()
         }
-        
+       function createMapBaseTetriminos(){
+        tetriminosBase = {
+            "Z":{
+                color:"red",
+                map:[
+                createVector(),
+
+                ]
+            }
+        }
+       }
 
 
         class Tetrimino{
-            constructor(){
-                this.posicion = createVector(0,0)
+            constructor(nombre = "Z"){
+                this.nombre = nombre
+                let tetriminoBase = tetriminosBase[nombre]
+                this.color = tetriminoBase.color
+                this.map = []
+                for (const pmino of tetriminoBase.map){
+                    this.map.push(pmino.copy())
+                }
+                this.posicion = createVector(int(tablero.columnas / 2),0)
             }
             rightMov(){
                 this.posicion.x++
@@ -65,12 +82,22 @@
             downMov(){
                 this.posicion.y++
             }
+            get mapTablero(){
+                let retorno = []
+                for(const pmino of this.map){
+                    let copy = pmino.copy().add(this.posicion)
+                    retorno.push (tablero.coordenada(copy.x, copy.y))
+                }
+                return retorno
+            }
 
             dibujar(){
                 push()
                 fill("red")
-                let coord = tablero.coordenada(this.posicion.x, this.posicion.y)
-                rect(coord.x, coord.y, tablero.lado)
+                for (const pmino of this.mapTablero){
+                    let coord = tablero.coordenada(pmino.x, pmino.y)
+                    rect(pmino.x, pmino.y, tablero.lado)
+                }
                 pop()
             }
         }
