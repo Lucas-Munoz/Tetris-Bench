@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tetris Bench</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js"></script>
+</head>
+<body>
+    <script src="Tablero.js"></script>
+    <script>
+        const margin_tablero = 15
+        let speed_regulator = 0
+        function setup(){
+            createCanvas(900,600)
+            tablero = new TableroT()
+            tetrimino = new Tetrimino()
+            resizeCanvas(
+                tablero.ancho + 2*margin_tablero,
+                tablero.alto + 2*margin_tablero
+            )
+        }
+
+        function keyEventTetris(){
+            if (millis()-speed_regulator < 150){
+                return
+            }
+            speed_regulator = millis()
+
+            if (keyIsDown(RIGHT_ARROW)){
+               tetrimino.rightMov()
+            }
+            if (keyIsDown(LEFT_ARROW)){
+                tetrimino.leftMov()
+            }     
+            if (keyIsDown(UP_ARROW)){
+                tetrimino.upMov()
+            }
+            if (keyIsDown(DOWN_ARROW)){
+                tetrimino.downMov()
+            }     
+        }
+
+        function draw(){
+            background("lightgray")
+            tablero.dibujar()
+            tetrimino.dibujar()
+            keyEventTetris()
+        }
+        
+
+
+        class Tetrimino{
+            constructor(){
+                this.posicion = createVector(0,0)
+            }
+            rightMov(){
+                this.posicion.x++
+            }
+            leftMov(){
+                this.posicion.x--
+            }
+            upMov(){
+                this.posicion.y--
+            }
+            downMov(){
+                this.posicion.y++
+            }
+
+            dibujar(){
+                push()
+                fill("red")
+                let coord = tablero.coordenada(this.posicion.x, this.posicion.y)
+                rect(coord.x, coord.y, tablero.lado)
+                pop()
+            }
+        }
+    </script>
+</body>
+</html>
