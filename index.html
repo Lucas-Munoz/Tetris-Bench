@@ -52,17 +52,53 @@
                 color:"red",
                 map:[
                 createVector(),
-                createVector(1,-1),
+                createVector(-1,-1),
                 createVector(0,-1),
                 createVector(1,0)
                 ]
-            }
+            },
+            "S":{
+                color:"dodgerblue",
+                map:[
+                createVector(),
+                createVector(1,-1),
+                createVector(0,-1),
+                createVector(-1,0)
+                ]
+            },
+            "J":{
+                color:"cyan",
+                map:[
+                createVector(),
+                createVector(-1,0),
+                createVector(-1,-1),
+                createVector(1,0)
+                ]
+            },
+            "L":{
+                color:"yellow",
+                map:[
+                createVector(),
+                createVector(-1,0),
+                createVector(1,-1),
+                createVector(1,0)
+                ]
+            },
+            "T":{
+                color:"magenta",
+                map:[
+                createVector(),
+                createVector(-1,0),
+                createVector(1,0),
+                createVector(0,1)
+                ]
+            },
         }
        }
 
 
         class Tetrimino{
-            constructor(nombre = "Z"){
+            constructor(nombre = "T"){
                 this.nombre = nombre
                 let tetriminoBase = tetriminosBase[nombre]
                 this.color = tetriminoBase.color
@@ -95,7 +131,7 @@
 
             dibujar(){
                 push()
-                fill("red")
+                fill(this.color)
                 for (const pmino of this.mapTablero){
                     let coord = tablero.coordenada(pmino.x, pmino.y)
                     rect(pmino.x, pmino.y, tablero.lado)
