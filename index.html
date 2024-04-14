@@ -41,7 +41,7 @@
             }     
         }
         function draw(){
-            background("lightgray")
+            background("#17a7a8")
             tablero.dibujar()
             tetrimino.dibujar()
             keyEventTetris()
@@ -90,7 +90,43 @@
                 createVector(),
                 createVector(-1,0),
                 createVector(1,0),
+                createVector(0,-1)
+                ]
+            },
+            "O":{
+                color:"#f4324a",
+                map:[
+                createVector(),
+                createVector(-1,0),
+                createVector(-1,1),
                 createVector(0,1)
+                ]
+            },
+            "Y":{
+                color:"#fb9c5a",
+                map:[
+                createVector(),
+                createVector(1,0),
+                createVector(0,1),
+                createVector(1,-1)
+                ]
+            },
+            "I":{
+                color:"#742cbd",
+                map:[
+                createVector(),
+                createVector(0,3),
+                createVector(0,2),
+                createVector(0,1)
+                ]
+            },
+            "P":{
+                color:"gray",
+                map:[
+                createVector(),
+                createVector(-1,0),
+                createVector(1,0),
+                createVector(2,0)
                 ]
             },
         }
@@ -98,7 +134,7 @@
 
 
         class Tetrimino{
-            constructor(nombre = "T"){
+            constructor(nombre = "I"){
                 this.nombre = nombre
                 let tetriminoBase = tetriminosBase[nombre]
                 this.color = tetriminoBase.color
