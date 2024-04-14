@@ -49,7 +49,7 @@
        function createMapBaseTetriminos(){
         tetriminosBase = {
             "Z":{
-                color:"red",
+                color:"#f0823f",
                 map:[
                 createVector(),
                 createVector(-1,-1),
@@ -58,7 +58,7 @@
                 ]
             },
             "S":{
-                color:"dodgerblue",
+                color:"#bd374c",
                 map:[
                 createVector(),
                 createVector(1,-1),
@@ -67,7 +67,7 @@
                 ]
             },
             "J":{
-                color:"cyan",
+                color:"#f7f799",
                 map:[
                 createVector(),
                 createVector(-1,0),
@@ -76,7 +76,7 @@
                 ]
             },
             "L":{
-                color:"yellow",
+                color:"#ffe999",
                 map:[
                 createVector(),
                 createVector(-1,0),
@@ -85,7 +85,7 @@
                 ]
             },
             "T":{
-                color:"magenta",
+                color:"#c71755",
                 map:[
                 createVector(),
                 createVector(-1,0),
@@ -121,7 +121,7 @@
                 ]
             },
             "P":{
-                color:"gray",
+                color:"#e32f21",
                 map:[
                 createVector(),
                 createVector(-1,0),
@@ -134,7 +134,7 @@
 
 
         class Tetrimino{
-            constructor(nombre = "I"){
+            constructor(nombre = "S"){
                 this.nombre = nombre
                 let tetriminoBase = tetriminosBase[nombre]
                 this.color = tetriminoBase.color

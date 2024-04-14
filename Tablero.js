@@ -22,9 +22,9 @@ class TableroT{
         for(let columna = 0; columna < this.columnas; columna++){
             for (let fila = 0; fila < this.filas; fila++){
                 if((columna+fila)%2==0){
-                    fill("#96b5ad")
+                    fill("#abccbd")
                 }else{
-                    fill("#122f51")
+                    fill("#5b9b9a")
                 }
                 let z = this.coordenada(columna, fila)
                     rect (z.x,z.y,this.lado)
