@@ -21,6 +21,12 @@
                 tablero.alto + 2*margin_tablero + tablero.lado
             )
         }
+        function draw(){
+            background("#17a7a8")
+            tablero.dibujar()
+            tetrimino.dibujar()
+            keyEventTetris()
+        }
 
         function keyEventTetris(){
             if (millis()-speed_regulator < 150){
@@ -35,20 +41,15 @@
                 tetrimino.leftMov()
             }     
             if (keyIsDown(UP_ARROW)){
-                tetrimino.upMov()
+                tetrimino.girar
             }
             if (keyIsDown(DOWN_ARROW)){
                 tetrimino.downMov()
             }     
         }
-        function draw(){
-            background("#17a7a8")
-            tablero.dibujar()
-            tetrimino.dibujar()
-            keyEventTetris()
-        }
+       
         class Tetrimino{
-            constructor(nombre = "S"){
+            constructor(nombre = "Z"){
                 this.nombre = nombre
                 let tetriminoBase = tetriminosBase[nombre]
                 this.color = tetriminoBase.color
@@ -60,36 +61,57 @@
             }
             rightMov(){
                 this.posicion.x++
-                let out = !this.isonTablero;
-                if(out){
+                if(this.failMovement){
                     this.leftMov()
                 }
             }
             leftMov(){
                 this.posicion.x--
-                let out = !this.isonTablero;
-                if(out){
+                if(this.failMovement){
                     this.rightMov()
                 }
             }
-            upMov(){
-                this.posicion.y--
-                let out = !this.isonTablero;
-                if(out){
-                    this.downMov()
-                }
-            }
+
             downMov(){
                 this.posicion.y++
-                let out = !this.isonTablero;
-                if(out){
+                if(this.failMovement){
                     this.upMov()
                 }
             }
 
+            upMov(){
+                this.posicion.y--
+            }
+            
+            girar(){
+                for (const pmino of this.mapa){
+                    pmino.set(pmino.y,-pmino.x)
+                }
+                if(this.failMovement){
+                    this.desgirar()
+                }
+            }
+
+            desgirar(){
+                for (const pmino of this.mapa){
+                    pmino.set(-pmino.y,pmino.x)
+                }
+            }
+
+            get failMovement(){
+                let outTablero = !this.isonTablero;
+                return outTablero
+            }
+
             get isonTablero(){
-                for (const pmino of this.mapaTablero){
-                    if (pmino.x<0){
+                for (const pmino of this.mapTablero){
+                    if (pmino.x < 0){
+                        return false
+                    }
+                    if (pmino.x >= tablero.columnas){
+                        return false
+                    }
+                    if (pmino.x >= tablero.columnas){
                         return false
                     }
                 }
@@ -100,7 +122,16 @@
                 let retorno = []
                 for(const pmino of this.map){
                     let copy = pmino.copy().add(this.posicion)
-                    retorno.push (tablero.coordenada(copy.x, copy.y))
+                    retorno.push(copy);
+                }
+                return retorno
+            }
+
+            get mapCanvas(){
+                let retorno = []
+                for(const pmino of this.map){
+                    let copy = pmino.copy().add(this.posicion)
+                    retorno.push (tablero.coordenada(copy.x, copy.y));
                 }
                 return retorno
             }
@@ -118,7 +149,7 @@
                     vertex(pmino.x, pmino.y)
                     vertex(pmino.x, pmino.y+this.lado)
                     vertex(pmino.x+this.lado, pmino.y)
-                    andShape()
+                    endShape(CLOSE)
                     rect(pmino.x, pmino.y, tablero.lado,tablero.lado/2)
                     pop()
                 }
