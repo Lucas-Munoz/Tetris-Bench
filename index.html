@@ -7,6 +7,7 @@
 </head>
 <body>
     <script src="Tablero.js"></script>
+    <script src="Tetrimino.js"></script>
     <script>
         const margin_tablero = 15
         let speed_regulator = 0
@@ -17,7 +18,7 @@
             tetrimino = new Tetrimino()
             resizeCanvas(
                 tablero.ancho + 2*margin_tablero,
-                tablero.alto + 2*margin_tablero
+                tablero.alto + 2*margin_tablero + tablero.lado
             )
         }
 
@@ -46,93 +47,6 @@
             tetrimino.dibujar()
             keyEventTetris()
         }
-       function createMapBaseTetriminos(){
-        tetriminosBase = {
-            "Z":{
-                color:"#f0823f",
-                map:[
-                createVector(),
-                createVector(-1,-1),
-                createVector(0,-1),
-                createVector(1,0)
-                ]
-            },
-            "S":{
-                color:"#bd374c",
-                map:[
-                createVector(),
-                createVector(1,-1),
-                createVector(0,-1),
-                createVector(-1,0)
-                ]
-            },
-            "J":{
-                color:"#f7f799",
-                map:[
-                createVector(),
-                createVector(-1,0),
-                createVector(-1,-1),
-                createVector(1,0)
-                ]
-            },
-            "L":{
-                color:"#ffe999",
-                map:[
-                createVector(),
-                createVector(-1,0),
-                createVector(1,-1),
-                createVector(1,0)
-                ]
-            },
-            "T":{
-                color:"#c71755",
-                map:[
-                createVector(),
-                createVector(-1,0),
-                createVector(1,0),
-                createVector(0,-1)
-                ]
-            },
-            "O":{
-                color:"#f4324a",
-                map:[
-                createVector(),
-                createVector(-1,0),
-                createVector(-1,1),
-                createVector(0,1)
-                ]
-            },
-            "Y":{
-                color:"#fb9c5a",
-                map:[
-                createVector(),
-                createVector(1,0),
-                createVector(0,1),
-                createVector(1,-1)
-                ]
-            },
-            "I":{
-                color:"#742cbd",
-                map:[
-                createVector(),
-                createVector(0,3),
-                createVector(0,2),
-                createVector(0,1)
-                ]
-            },
-            "P":{
-                color:"#e32f21",
-                map:[
-                createVector(),
-                createVector(-1,0),
-                createVector(1,0),
-                createVector(2,0)
-                ]
-            },
-        }
-       }
-
-
         class Tetrimino{
             constructor(nombre = "S"){
                 this.nombre = nombre
@@ -146,16 +60,42 @@
             }
             rightMov(){
                 this.posicion.x++
+                let out = !this.isonTablero;
+                if(out){
+                    this.leftMov()
+                }
             }
             leftMov(){
                 this.posicion.x--
+                let out = !this.isonTablero;
+                if(out){
+                    this.rightMov()
+                }
             }
             upMov(){
                 this.posicion.y--
+                let out = !this.isonTablero;
+                if(out){
+                    this.downMov()
+                }
             }
             downMov(){
                 this.posicion.y++
+                let out = !this.isonTablero;
+                if(out){
+                    this.upMov()
+                }
             }
+
+            get isonTablero(){
+                for (const pmino of this.mapaTablero){
+                    if (pmino.x<0){
+                        return false
+                    }
+                }
+                return true
+            }
+
             get mapTablero(){
                 let retorno = []
                 for(const pmino of this.map){
@@ -171,6 +111,16 @@
                 for (const pmino of this.mapTablero){
                     let coord = tablero.coordenada(pmino.x, pmino.y)
                     rect(pmino.x, pmino.y, tablero.lado)
+                    push()
+                    noStroke()
+                    fill(255,255,255,70)
+                    beginShape()
+                    vertex(pmino.x, pmino.y)
+                    vertex(pmino.x, pmino.y+this.lado)
+                    vertex(pmino.x+this.lado, pmino.y)
+                    andShape()
+                    rect(pmino.x, pmino.y, tablero.lado,tablero.lado/2)
+                    pop()
                 }
                 pop()
             }

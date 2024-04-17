@@ -6,8 +6,11 @@ class TableroT{
         this.lado = 25
         this.ancho = this.columnas*this.lado
         this.alto = this.filas*this.lado
-        this.posicion = createVector(margin_tablero,margin_tablero)
-            }
+        this.posicion = createVector(
+            margin_tablero,
+            margin_tablero + this.lado
+            );
+        }
 
     coordenada(x,y){
         return createVector(x,y).mult(this.lado).add(this.posicion)
